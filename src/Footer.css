@@ -1,0 +1,42 @@
+.footer {
+    background-color: #222;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+
+    margin-bottom: auto;
+
+    /* position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-top: 25px;
+    padding-top: 25px; */
+  }
+  
+  .customer-care {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .customer-care-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .icon {
+    margin-right: 5px;
+  }
+  
+  .social-media {
+    display: flex;
+  }
+  
+  .social-media .icon {
+    margin-right: 10px;
+  }
+  

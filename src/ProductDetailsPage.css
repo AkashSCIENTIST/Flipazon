@@ -1,0 +1,164 @@
+.product-details {
+    display: flex;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .top-down-split{
+    display: flex;
+    flex-direction: column;
+  }
+
+
+
+  @media (min-width: 768px) {
+    .product-info{
+        margin-left: 5%;
+        margin-right: 15%;
+      }
+  }
+  
+  @media (max-width: 768px) {
+    .product-details {
+      flex-direction: column;
+    }
+    .product-info{
+        margin-left: 5%;
+        margin-right: 5%;
+      }
+  }
+  
+  .product-image,
+  .product-info {
+    flex-basis: 50%;
+  }
+
+  .product-info{
+    align-items: flex-start;
+  }
+
+  
+  .product-image > img {
+    margin-right: 20px;
+    margin-top : 20px;
+  }
+
+  .product-image > img {
+      height: 250px;
+      width: 350px;
+    }
+  
+  .product-name {
+    font-weight: bold;
+  }
+  
+  .product-description {
+    font-style: italic;
+    text-align: justify;
+    color: #666;
+  }
+  
+  .product-price {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  .quantity-bar {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .quantity-button {
+    background-color: #ddd;
+    color: #333;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  
+  .quantity-input {
+    text-align: center;
+  }
+  
+  .add-to-cart-button {
+    background-color: orange;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .comment-section {
+    margin-top: 20px;
+  }
+  
+  .comment-textarea {
+    width: 40%;
+    height: 100px;
+    resize: none;
+    padding: 5px;
+  }
+
+  
+  .posted-comments {
+    margin-top: 20px;
+  }
+  
+  .posted-comment {
+    margin-bottom: 10px;
+  }
+  
+  /* Additional CSS to make quantity bar items compact and equal height */
+  
+  .quantity-bar {
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .quantity-button,
+  .quantity-input {
+    height: 100%;
+  }
+  
+  .quantity-input{
+    border: none;
+    width: 10%;
+  }
+  .comment-section {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .comment-textarea {
+    width: 80%;
+    height: 100px;
+    resize: none;
+    margin: 2%;
+  }
+  
+  .comment-submit-button {
+    background-color: orange;
+    color: white;
+    padding: 10px 20px;
+    margin-left: 2%;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    max-width: fit-content;
+  }
+  
+  .posted-comments {
+    margin-top: 20px;
+    margin-left: 2%;
+    width: 80%;
+  }
+  
+  .posted-comment {
+    margin-bottom: 10px;
+  }
+  
