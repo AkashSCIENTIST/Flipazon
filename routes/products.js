@@ -8,6 +8,20 @@ app.get("/", (req, res) => {
   res.send("works");
 });
 
+app.get("/all", async (req, res) => {
+  try {
+    Product.find({})
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((error) => {
+        res.status(500).json({ error: error.message });
+      });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.post("/new", (req, res) => {
   try {
     const received = req.body;
@@ -47,8 +61,29 @@ app.get("/get/:productId", (req, res) => {
 });
 
 app.post("/edit", (req, res) => {
-  const productId = req.body.productId;
-  const deatils = req.body.deatils;
+  try {
+    const received = req.body;
+    const body = {
+      productName: received.productName,
+      price: received.productPrice,
+      quantity: received.productQuantity,
+      vendor: received.vendor ?? "Flipazon",
+      taxPercentage: received.taxPercentage ?? 9,
+      category: received.category ?? "No Category",
+      tags: received.tags ?? [],
+      image: received.image ?? "base64-encoded-image-string",
+      description: received.productDescription,
+    };
+    Product.findOneAndUpdate({ productId: received.productId }, body, {
+      new: false,
+    })
+      .then((e) => {
+        res.status(200).json({ msg: "success" });
+      })
+      .catch((error) => {
+        res.status(500).json({ error: error.message });
+      });
+  } catch (error) {}
 });
 
 app.post("/addquantity", (req, res) => {
@@ -76,6 +111,8 @@ app.get("/search", (req, res) => {
   Product.find({
     $or: [
       { productName: { $regex: regex } },
+      { description: { $regex: regex } },
+      { category: { $regex: regex } },
       { vendor: { $regex: regex } },
       { tags: { $regex: regex } },
     ],

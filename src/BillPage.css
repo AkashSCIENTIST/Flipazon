@@ -1,0 +1,23 @@
+.billpage{
+    width: 90vw;
+    margin-left: 5%;
+    height: 81vh;
+}
+
+.billpage input{
+    width: 90vw;
+}
+
+.billpage .usercontent{
+ padding-top: 25px;
+}
+
+.billpage button{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.billpage label {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}

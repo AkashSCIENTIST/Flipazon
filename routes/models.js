@@ -31,6 +31,29 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  address: {
+    type: [
+      {
+        type: String,
+        trim: true,
+        lowercase: true,
+        validate: {
+          validator: function (value) {
+            // Ensure unique addresses by converting to lowercase and removing letter spacing
+            const formattedValue = value.toLowerCase().replace(/\s/g, "");
+
+            // Find other user documents with the same formatted address
+            return mongoose.models.User.findOne({
+              _id: { $ne: this._id },
+              addresses: formattedValue,
+            }).then((user) => !user); // Return true if no other user with the same address found
+          },
+          message: "Address must be unique.",
+        },
+      },
+    ],
+    default: [],
+  },
   email: {
     type: String,
     unique: true,
@@ -103,6 +126,7 @@ const productSchema = new mongoose.Schema(
     quantity: {
       type: Number,
       required: true,
+      min: 0,
     },
     description: {
       type: String,
@@ -153,6 +177,12 @@ productSchema.index({
   vendor: "text",
   tags: "text",
 });
+productSchema.pre("remove", async function (next) {
+  const productId = this._id;
+  // Cascade delete child documents from the Cart collection
+  await Cart.deleteMany({ productId });
+  next();
+});
 const Product = mongoose.model("Product", productSchema);
 
 const cartSchema = new mongoose.Schema({
@@ -181,4 +211,47 @@ cartSchema.index({ productId: 1, userId: 1 }, { unique: true });
 
 const Cart = mongoose.model("Cart", cartSchema);
 
-module.exports = { User, Comment, Product, Cart };
+const billSchema = new mongoose.Schema({
+  deliveryAddress: {
+    type: String,
+    required: true,
+  },
+  totalAmount: {
+    type: Number,
+    required: true,
+  },
+  userId: {
+    type: String,
+    ref: "user",
+    required: true,
+  },
+  content: [
+    {
+      price: {
+        type: Number,
+        required: true,
+      },
+      productId: {
+        type: String,
+        ref: "product",
+        required: true,
+      },
+      productName: {
+        type: String,
+        required: true,
+      },
+      qty: {
+        type: Number,
+        required: true,
+      },
+      taxPercentage: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
+});
+
+const Bill = mongoose.model("Bill", billSchema);
+
+module.exports = { User, Comment, Product, Cart, Bill };

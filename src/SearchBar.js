@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./SearchBar.css";
 import reactLogo from "./logo.svg";
 import { BsCartFill, BsFillPersonFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const navigate = useNavigate();
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    setUser(getCookie("flipazon_username"));
+  });
 
   const handleInputChange = (event) => {
     setSearchQuery(cleanText(event.target.value));
@@ -51,13 +60,80 @@ const SearchBar = () => {
   };
 
   const redirectCart = (event) => {
-    navigate("/cart");
+    if (getCookie("flipazon_username")) {
+      navigate("/cart");
+    } else {
+      toast("Sign In to see cart", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      navigate("/signin");
+    }
+  };
+
+  function getCookie(name) {
+    var cookies = document.cookie.split("; ");
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].split("=");
+      if (cookie[0] === name) {
+        return decodeURIComponent(cookie[1]);
+      }
+    }
+    return null;
+  }
+
+  const handleProfile = (e) => {
+    var myCookieValue = getCookie("flipazon_username");
+    console.log(myCookieValue);
+    if (myCookieValue) {
+      confirmAlert({
+        title: "Confirm to Sign Out",
+        message: "Sign out of account ?",
+        buttons: [
+          {
+            label: "Yes",
+            onClick: () => {
+              document.cookie =
+                "flipazon_username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              toast("Sign Out successful", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+              });
+              navigate("/signin");
+            },
+          },
+          {
+            label: "No",
+            onClick: () => {},
+          },
+        ],
+      });
+    } else {
+      navigate("/signin");
+    }
   };
 
   return (
     <div className='search-bar'>
       <div className='top-row'>
-        <img src={reactLogo} alt='React Logo' className='logo' />
+        <img
+          src={reactLogo}
+          alt='React Logo'
+          onClick={redirectHome}
+          className='clickable logo'
+        />
         <h1 onClick={redirectHome} className='clickable'>
           Flipazon
         </h1>
@@ -73,46 +149,16 @@ const SearchBar = () => {
           Search
         </button>
         <BsCartFill className='cart-logo clickable' onClick={redirectCart} />
-        <BsFillPersonFill className='profile-logo' />
+        <BsFillPersonFill
+          className='profile-logo clickable'
+          onClick={handleProfile}></BsFillPersonFill>
+        {user && (
+          <b className='clickable'  onClick={handleProfile}>
+            {user}
+          </b>
+        )}
       </div>
-      {/* <div className="bottom-row">
-        <button
-          className={`category ${selectedCategory === 'Groceries' ? 'active' : ''}`}
-          onClick={() => handleCategoryClick('Groceries')}
-        >
-          Groceries
-        </button>
-        <button
-          className={`category ${selectedCategory === 'Fashion' ? 'active' : ''}`}
-          onClick={() => handleCategoryClick('Fashion')}
-        >
-          Fashion
-        </button>
-        <button
-          className={`category ${selectedCategory === 'Sports' ? 'active' : ''}`}
-          onClick={() => handleCategoryClick('Sports')}
-        >
-          Sports
-        </button>
-        <button
-          className={`category ${selectedCategory === 'Appliances' ? 'active' : ''}`}
-          onClick={() => handleCategoryClick('Appliances')}
-        >
-          Appliances
-        </button>
-        <button
-          className={`category ${selectedCategory === 'Gadgets' ? 'active' : ''}`}
-          onClick={() => handleCategoryClick('Gadgets')}
-        >
-          Gadgets
-        </button>
-        <button
-          className={`category ${selectedCategory === 'Healthcare' ? 'active' : ''}`}
-          onClick={() => handleCategoryClick('Healthcare')}
-        >
-          Healthcare
-        </button>
-      </div> */}
+      <ToastContainer />
     </div>
   );
 };

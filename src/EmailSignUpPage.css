@@ -55,4 +55,8 @@
   .card button[type="submit"]:hover {
     background-color: #ff7d00;
   }
+
+  .clickable{
+    cursor: pointer;
+  }
   

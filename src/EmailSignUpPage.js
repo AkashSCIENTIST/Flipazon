@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./EmailSignUpPage.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EmailSignUpPage = () => {
   const [name, setName] = useState("");
@@ -10,7 +13,7 @@ const EmailSignUpPage = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (
       name !== "" &&
@@ -19,7 +22,37 @@ const EmailSignUpPage = () => {
       email !== "" &&
       password !== ""
     ) {
-      console.log({ name, phone, address, email, password });
+      const body = { name, phone, address : [address], email, password };
+      console.log(body);
+      await axios
+        .post("http://localhost:8001/user/new", body)
+        .then((res) => {
+          console.log(res);
+          toast("Account Created", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          navigate("/signin");
+        })
+        .catch((err) => {
+          toast("Error. Try Again. Email might be used by another user", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          console.log(err);
+        });
     }
   };
 
@@ -45,6 +78,16 @@ const EmailSignUpPage = () => {
             />
           </div>
           <div className='form-group'>
+            <label htmlFor='email'>Email</label>
+            <input
+              type='email'
+              id='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className='form-group'>
             <label htmlFor='phone'>Phone Number</label>
             <input
               type='tel'
@@ -64,16 +107,7 @@ const EmailSignUpPage = () => {
               required
             />
           </div>
-          <div className='form-group'>
-            <label htmlFor='email'>Email</label>
-            <input
-              type='email'
-              id='email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+
           <div className='form-group'>
             <label htmlFor='password'>Password</label>
             <input
@@ -85,9 +119,12 @@ const EmailSignUpPage = () => {
             />
           </div>
           <button type='submit'>Sign Up</button>
-          <h6 onClick={redirectSignIn}>Click here to log into existing account</h6>
+          <h6 onClick={redirectSignIn} className='clickable'>
+            Click here to log into existing account
+          </h6>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

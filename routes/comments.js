@@ -21,15 +21,18 @@ app.post("/add", (req, res) => {
   const body = { userId, productId, starRating, review };
   console.log(body);
 
-  new Comment(body)
-    .save()
+  Comment.findOneAndUpdate(
+    { userId, productId },
+    { userId, productId, starRating, review },
+    { upsert: true, new: true },
+  )
     .then(() => {
       console.log("comment saved");
-      res.send(body);
+      res.status(200).send(body);
     })
     .catch((err) => {
       console.log(err);
-      res.send(err);
+      res.status(500).send(err);
     });
 });
 

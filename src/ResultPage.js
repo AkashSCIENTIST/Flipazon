@@ -20,7 +20,10 @@ const ResultPage = () => {
         setProducts(body);
       })
       .catch((err) => console.log(err));
-  }, [searchParams]);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [searchParams, query]);
+
+  useEffect(() => {}, [selectedOption]);
 
   const handleSelectChange = (event) => {
     setSelectedOption(event.target.value);
@@ -44,7 +47,7 @@ const ResultPage = () => {
       }
       return 0;
     });
-
+    console.log(sortedArray);
     setResult(sortedArray);
   }
 
@@ -62,7 +65,7 @@ const ResultPage = () => {
       }
       return 0;
     });
-
+    console.log(sortedArray);
     setResult(sortedArray);
   }
 

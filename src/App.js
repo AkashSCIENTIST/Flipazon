@@ -13,6 +13,8 @@ import EmailLoginPage from "./EmailLoginPage";
 import EmailSignUpPage from "./EmailSignUpPage";
 import Cart from "./Cart";
 import React, { useEffect } from "react";
+import BillPage from "./BillPage";
+import AllProductsPage from "./AllProductsPage";
 
 function App() {
   useEffect(() => {
@@ -32,10 +34,12 @@ function App() {
           />
           <Route path='/search' exact element={<ResultPage />} />
           <Route path='/add' exact element={<ProductAddPage />} />
-          <Route path='/edit' exact element={<ProductEditPage />} />
+          <Route path='/all' exact element={<AllProductsPage />} />
+          <Route path='/edit/:productId' exact element={<ProductEditPage />} />
           <Route path='/signin' exact element={<EmailLoginPage />} />
           <Route path='/signup' exact element={<EmailSignUpPage />} />
           <Route path='/cart' exact element={<Cart />} />
+          <Route path='/bill' exact element={<BillPage />} />
           <Route path='*' element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
