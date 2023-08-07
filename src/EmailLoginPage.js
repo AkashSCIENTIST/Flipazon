@@ -69,6 +69,7 @@ const EmailLoginPage = () => {
             <input
               type='email'
               id='email'
+              name='email_box'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -79,12 +80,15 @@ const EmailLoginPage = () => {
             <input
               type='password'
               id='password'
+              name='password_box'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
-          <button type='submit'>Sign In</button>
+          <button type='submit' name='signin_button'>
+            Sign In
+          </button>
           <ToastContainer />
           <h6 onClick={redirectSignUp}>Click here to create new account</h6>
         </form>

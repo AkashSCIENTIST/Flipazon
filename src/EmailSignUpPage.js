@@ -22,7 +22,7 @@ const EmailSignUpPage = () => {
       email !== "" &&
       password !== ""
     ) {
-      const body = { name, phone, address : [address], email, password };
+      const body = { name, phone, address: [address], email, password };
       console.log(body);
       await axios
         .post("http://localhost:8001/user/new", body)
@@ -71,6 +71,7 @@ const EmailSignUpPage = () => {
             <label htmlFor='name'>Name</label>
             <input
               type='text'
+              name='name_box'
               id='name'
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -82,6 +83,7 @@ const EmailSignUpPage = () => {
             <input
               type='email'
               id='email'
+              name='email_box'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -92,6 +94,7 @@ const EmailSignUpPage = () => {
             <input
               type='tel'
               id='phone'
+              name='phone_box'
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               required
@@ -102,6 +105,7 @@ const EmailSignUpPage = () => {
             <input
               type='text'
               id='address'
+              name='address_box'
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               required
@@ -113,12 +117,15 @@ const EmailSignUpPage = () => {
             <input
               type='password'
               id='password'
+              name='password_box'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
-          <button type='submit'>Sign Up</button>
+          <button type='submit' name='signup_button'>
+            Sign Up
+          </button>
           <h6 onClick={redirectSignIn} className='clickable'>
             Click here to log into existing account
           </h6>

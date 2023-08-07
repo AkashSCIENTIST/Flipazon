@@ -7,8 +7,9 @@ const options = {
 };
 
 // Set the MongoDB connection URL
-const mongoURL = "mongodb://localhost:27017/ecommerce";
-
+// const mongoURL = "mongodb://localhost:27017/ecommerce";
+const mongoURL =
+  "mongodb+srv://20i306:12345@cluster0.wgpx6ki.mongodb.net/ecommerce";
 // Connect to MongoDB
 mongoose
   .connect(mongoURL, options)
