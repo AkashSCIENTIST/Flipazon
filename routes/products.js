@@ -106,7 +106,7 @@ app.post("/reducequantity", (req, res) => {
 
 app.get("/search", (req, res) => {
   let search = req.query.q;
-  console.log(search);
+  // console.log(search);
   const regex = new RegExp(search, "i");
   Product.find({
     $or: [

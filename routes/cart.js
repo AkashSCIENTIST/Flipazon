@@ -3,6 +3,11 @@ var app = express.Router();
 var models = require("./models");
 var Cart = models.Cart;
 
+app.get("/", (req, res) => {
+  const query = req.query.q;
+  res.send("works");
+});
+
 app.post("/add", (req, res) => {
   try {
     const received = req.body;

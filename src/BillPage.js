@@ -91,6 +91,7 @@ function BillPage() {
       newAddress,
       userId,
       totalAmount,
+      
       content: content.map((item) => {
         return {
           price: item.price,

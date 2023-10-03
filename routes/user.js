@@ -3,9 +3,16 @@ var app = express.Router();
 var models = require("./models");
 var User = models.User;
 
+app.get("/", (req, res) => {
+  const query = req.query.q;
+  res.send("works");
+});
+
 app.post("/new", async (req, res) => {
   try {
     const body = req.body;
+    // console.log(req)
+    console.log(body);
     new User(body)
       .save()
       .then(() => {
@@ -25,7 +32,9 @@ app.post("/login", async (req, res) => {
         if (users.length == 0) {
           res.status(200).send({});
         } else {
-          res.status(200).send({ userId: users[0].userId, isAdmin : users[0].isAdmin });
+          res
+            .status(200)
+            .send({ userId: users[0].userId, isAdmin: users[0].isAdmin });
         }
       })
       .catch((error) => {
@@ -59,24 +68,34 @@ app.get("/:userid", async (req, res) => {
   }
 });
 
-
 app.post("/newaddress", async (req, res) => {
   try {
-    const { userId, newAddress } = req.body;
-    User.findById(userId).then((user) => {
-      if (!user) {
-        throw new Error("User not found");
+    const { userId, newAddress, password } = req.body;
+
+    User.userExists(userId, password, (err, exists) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
       }
 
-      user.addresses.push(newAddress);
-      user
-        .save()
-        .then(() => {
-          res.status(200).send({ mag: "Address Saved" });
-        })
-        .catch((error) => {
-          res.status(500).json({ error: error.message });
+      if (exists) {
+        User.findById(userId).then((user) => {
+          if (!user) {
+            throw new Error("User not found");
+          }
+
+          user.addresses.push(newAddress);
+          user
+            .save()
+            .then(() => {
+              res.status(200).send({ mag: "Address Saved" });
+            })
+            .catch((error) => {
+              res.status(500).json({ error: error.message });
+            });
         });
+      } else {
+        throw new Error("User not found");
+      }
     });
   } catch (error) {
     res.status(500).json({ error: error.message });

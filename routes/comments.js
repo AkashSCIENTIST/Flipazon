@@ -4,6 +4,11 @@ var Comment = models.Comment;
 const PORT = process.env.PORT || 3000;
 var app = express.Router();
 
+app.get("/", (req, res) => {
+  const query = req.query.q;
+  res.send("works");
+});
+
 app.get("/:productId", (req, res) => {
   const productId = req.params.productId;
   Comment.find({ productId })

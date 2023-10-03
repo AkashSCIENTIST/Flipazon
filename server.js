@@ -4,6 +4,8 @@ const session = require("express-session");
 const formData = require("express-form-data");
 const dotenv = require("dotenv");
 var cors = require("cors");
+var multer = require("multer");
+var forms = multer();
 const PORT = 8001;
 
 const user_router = require("./routes/user");
@@ -15,6 +17,8 @@ const bill_router = require("./routes/bill");
 dotenv.config();
 const app = express();
 app.use(cors());
+// app.use(forms.array()); 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
 app.get("/", (req, res) => {
@@ -26,7 +30,10 @@ app.use("/product", products_router);
 app.use("/comment", comments_router);
 app.use("/cart", cart_router);
 app.use("/bill", bill_router);
-console.log("Products Router added");
+app.use((req, res) => {
+  console.log("Null");
+  res.status(404).send("Route not found");
+});
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT} http://localhost:${PORT}`);

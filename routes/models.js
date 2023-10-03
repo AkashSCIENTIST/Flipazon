@@ -7,9 +7,8 @@ const options = {
 };
 
 // Set the MongoDB connection URL
-// const mongoURL = "mongodb://localhost:27017/ecommerce";
-const mongoURL =
-  "mongodb+srv://20i306:12345@cluster0.wgpx6ki.mongodb.net/ecommerce";
+const mongoURL = "mongodb://localhost:27017/ecommerce";
+// const mongoURL = "mongodb+srv://20i306:12345@cluster0.wgpx6ki.mongodb.net/ecommerce";
 // Connect to MongoDB
 mongoose
   .connect(mongoURL, options)
@@ -69,6 +68,30 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
 });
+
+// Define a static method to check if a user is an admin
+userSchema.statics.isAdminUser = function (userId, callback) {
+  this.findOne({ userId }, (err, user) => {
+    if (err) {
+      return callback(err);
+    }
+    if (!user) {
+      return callback(null, false); // User not found
+    }
+    callback(null, user.isAdmin);
+  });
+};
+
+// Define a static method to check if a user exists by userId and password
+userSchema.statics.userExists = function (userId, password, callback) {
+  this.findOne({ userId, password }, (err, user) => {
+    if (err) {
+      return callback(err);
+    }
+    callback(null, !!user); // Pass true if user exists, false otherwise
+  });
+};
+
 userSchema.set("primaryKey", "userId");
 const User = mongoose.model("User", userSchema);
 

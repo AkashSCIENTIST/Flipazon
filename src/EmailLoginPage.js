@@ -69,7 +69,7 @@ const EmailLoginPage = () => {
             <input
               type='email'
               id='email'
-              name='email_box'
+              name='login_email_box'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -80,7 +80,7 @@ const EmailLoginPage = () => {
             <input
               type='password'
               id='password'
-              name='password_box'
+              name='login_password_box'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required

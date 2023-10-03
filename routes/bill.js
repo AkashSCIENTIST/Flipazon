@@ -7,6 +7,11 @@ var User = models.User;
 var Product = models.Product;
 var Cart = models.Cart;
 
+app.get("/", (req, res) => {
+  const query = req.query.q;
+  res.send("works");
+});
+
 app.post("/new", async (req, res) => {
   console.log("new bill triggered");
   let errstr = "";
